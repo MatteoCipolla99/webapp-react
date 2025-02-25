@@ -11,8 +11,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<DefaultLayout />}>
-          <Route index="/" element={<HomePage />} />
+          <Route index element={<HomePage />} />
           <Route path="/movies/:id" element={<MoviePage />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
