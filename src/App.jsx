@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router";
+// Layouts
+import DefaultLayout from "./layout/DefaultLayout";
+//Pages
 import HomePage from "./pages/Homepage";
 import MoviePage from "./pages/MoviePage";
 
@@ -6,8 +9,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index="/" element={<HomePage />} />
-        <Route path="/movies/:id" element={<MoviePage />} />
+        <Route element={<DefaultLayout />}>
+          <Route index="/" element={<HomePage />} />
+          <Route path="/movies/:id" element={<MoviePage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
