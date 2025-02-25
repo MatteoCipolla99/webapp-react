@@ -4,6 +4,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 //Pages
 import HomePage from "./pages/Homepage";
 import MoviePage from "./pages/MoviePage";
+import PageNotFound from "./pages/PageNotFound";
 
 export default function App() {
   return (
