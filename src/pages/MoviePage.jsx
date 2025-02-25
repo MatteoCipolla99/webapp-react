@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function MoviePage() {
