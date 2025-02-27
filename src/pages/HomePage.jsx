@@ -14,11 +14,10 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="container">
-        {movies.map((movie) => (
-          <div key={movie.id}>{movie.title}</div>
-        ))}
-      </div>
+      <h1>Home Page</h1>
+      {movies.map((movie) => (
+        <div key={movie.id}>{movie.title}</div>
+      ))}
     </>
   );
 }
