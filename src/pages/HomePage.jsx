@@ -23,7 +23,8 @@ export default function HomePage() {
               <Card
                 image={movie.image}
                 title={movie.title}
-                content={movie.abstract}
+                abstract={movie.abstract}
+                director={movie.director}
               />
             </div>
           ))}
