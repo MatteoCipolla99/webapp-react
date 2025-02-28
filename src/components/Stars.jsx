@@ -3,10 +3,10 @@ export default function Stars({ vote }) {
 
   for (let i = 1; i <= 5; i++) {
     if (i <= vote) {
-      //stelle piene
+      // stelline piene
       starIcons.push(<i key={i} className="fa-solid fa-star"></i>);
     } else {
-      // stelle vuote
+      // stelline vuote
       starIcons.push(<i key={i} className="fa-regular fa-star"></i>);
     }
   }
