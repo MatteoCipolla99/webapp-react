@@ -25,6 +25,8 @@ export default function HomePage() {
                 title={movie.title}
                 abstract={movie.abstract}
                 director={movie.director}
+                vote={movie.vote}
+                link={`/movies/${movie.id}`}
               />
             </div>
           ))}

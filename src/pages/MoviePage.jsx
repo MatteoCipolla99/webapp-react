@@ -1,6 +1,9 @@
 import axios from "../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Container from "../components/Container";
+import { Link } from "react-router-dom";
+import Stars from "../components/Stars";
 
 export default function MoviePage() {
   const [movie, setMovie] = useState({});
@@ -24,35 +27,33 @@ export default function MoviePage() {
 
   return (
     <Container>
-      <div className="grid grid-cols-12 gap-8">
+      <Link to="/">
+        <i className="fa-solid fa-house"></i> HomePage
+      </Link>
+      <section className="grid grid-cols-12 gap-4 mt-4">
         <div className="col-span-12 md:col-span-4">
-          <img
-            src={movie.image}
-            alt={movie.title}
-            className="w-full rounded-lg shadow-lg"
-          />
+          <img src={movie.image} alt={movie.title} />
         </div>
-        <div className="col-span-12 md:col-span-8">
-          <h1 className="text-4xl font-bold">{movie.title}</h1>
-          <h3 className="text-2xl font-medium">{movie.director}</h3>
-          <Paragraph size="lg" className="my-4">
-            {movie.abstract}
-          </Paragraph>
-
-          {movie.reviews && movie.reviews.length > 0 && (
-            <div className="mt-8">
-              <h2 className="text-3xl font-semibold">Recensioni</h2>
-              <div className="space-y-4 mt-4">
-                {movie.reviews.map((review, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                    <Review review={review} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="col-span-12 md:col-span-8 space-y-4 bg-white p-4">
+          <p className="text-xl font-bold">{movie.title}</p>
+          <p className="text-lg font-semibold">{movie.director}</p>
+          <p>{movie.abstract}</p>
         </div>
-      </div>
+      </section>
+      {movie.reviews?.length > 0 && (
+        <section className="mt-4 bg-white p-4 space-y-4">
+          <p className="text-lg font-semibold">Recensioni</p>
+          <ul>
+            {movie.reviews.map((review) => (
+              <li className="py-2 border-b border-neutral-200" key={review.id}>
+                {review.name}
+                <Stars vote={review.vote} />
+                <p>{review.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </Container>
   );
 }

@@ -1,7 +1,8 @@
 import Paragraph from "./Paragraph";
 import Button from "./Button";
+import { Link } from "react-router";
 
-export default function Card({ image, title, director, abstract }) {
+export default function Card({ image, title, director, abstract, link, vote }) {
   return (
     <div className="bg-white flex rounded-xl shadow h-full">
       <div className="w-1/2">
@@ -13,8 +14,10 @@ export default function Card({ image, title, director, abstract }) {
         <Paragraph size="sm" className="line-clamp-3">
           {abstract}
         </Paragraph>
-        <div className="mt-auto text-center">
-          <Button>Leggi di più</Button>
+        <div className="mt-auto text-center from-red-500 to-red-800">
+          <Link to={link}>
+            <Button>Scopri di più</Button>
+          </Link>
         </div>
       </div>
     </div>
