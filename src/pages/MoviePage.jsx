@@ -55,7 +55,7 @@ export default function MoviePage() {
       )}
       <section className="mt-4 bg-white p-4 space-y-4">
         <p>Aggiungi una recensione</p>
-        <FormAddReview />
+        <FormAddReview onFormSubmitted={fetchMovies} />
       </section>
     </Container>
   );
