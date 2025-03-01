@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../api/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import Container from "./Container";
@@ -8,11 +8,15 @@ const initialFormData = {
   title: "",
   director: "",
   abstract: "",
+  genre: "Non specificato", // Aggiunto campo genre
+  release_year: new Date().getFullYear().toString(), // Aggiunto release_year
   image: undefined,
 };
 
 export default function CreateMovie() {
   const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleField = (fieldName, fieldValue) => {
@@ -26,6 +30,20 @@ export default function CreateMovie() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    // Validazione
+    if (
+      !formData.title ||
+      !formData.director ||
+      !formData.abstract ||
+      !formData.image
+    ) {
+      setError("Compila tutti i campi obbligatori");
+      setLoading(false);
+      return;
+    }
 
     const dataToSend = new FormData();
 
@@ -34,14 +52,24 @@ export default function CreateMovie() {
     }
 
     axios
-      .post(`${import.meta.env.VITE_API_URL}/movies`, dataToSend, {
+      .post("/movies", dataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then(() => {
+      .then((response) => {
+        console.log("Film inserito con successo:", response.data);
         setFormData(initialFormData);
         navigate("/");
+      })
+      .catch((err) => {
+        console.error("Errore durante l'inserimento:", err);
+        setError(
+          err.response?.data?.message || "Errore durante l'inserimento del film"
+        );
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -49,10 +77,11 @@ export default function CreateMovie() {
     <Container>
       <div className="bg-white p-4">
         <h1 className="font-bold">Crea un nuovo film</h1>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
         <form className="space-y-2 mt-4" onSubmit={handleSubmit}>
           <div>
             <label className="inline-block mb-2" htmlFor="title">
-              Titolo
+              Titolo *
             </label>
             <input
               className="w-full border border-neutral-200 p-2 rounded-sm"
@@ -62,11 +91,12 @@ export default function CreateMovie() {
               placeholder="Inserisci il titolo del film"
               value={formData.title}
               onChange={(e) => handleField("title", e.target.value)}
+              required
             />
           </div>
           <div>
             <label className="inline-block mb-2" htmlFor="director">
-              Regista
+              Regista *
             </label>
             <input
               className="w-full border border-neutral-200 p-2 rounded-sm"
@@ -76,11 +106,42 @@ export default function CreateMovie() {
               placeholder="Inserisci il nome del regista"
               value={formData.director}
               onChange={(e) => handleField("director", e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label className="inline-block mb-2" htmlFor="genre">
+              Genere
+            </label>
+            <input
+              className="w-full border border-neutral-200 p-2 rounded-sm"
+              id="genre"
+              name="genre"
+              type="text"
+              placeholder="Inserisci il genere del film"
+              value={formData.genre}
+              onChange={(e) => handleField("genre", e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="inline-block mb-2" htmlFor="release_year">
+              Anno di uscita
+            </label>
+            <input
+              className="w-full border border-neutral-200 p-2 rounded-sm"
+              id="release_year"
+              name="release_year"
+              type="number"
+              min="1900"
+              max="2030"
+              placeholder="Inserisci l'anno di uscita"
+              value={formData.release_year}
+              onChange={(e) => handleField("release_year", e.target.value)}
             />
           </div>
           <div>
             <label className="inline-block mb-2" htmlFor="image">
-              Immagine
+              Immagine *
             </label>
             <input
               className="w-full border border-neutral-200 p-2 rounded-sm"
@@ -90,11 +151,12 @@ export default function CreateMovie() {
               accept="image/*"
               placeholder="Inserisci l'immagine"
               onChange={(e) => handleField("image", e.target.files[0])}
+              required
             />
           </div>
           <div>
             <label className="inline-block mb-2" htmlFor="abstract">
-              Trama
+              Trama *
             </label>
             <textarea
               className="w-full border border-neutral-200 p-2 rounded-sm"
@@ -108,7 +170,9 @@ export default function CreateMovie() {
               minLength={5}
             ></textarea>
           </div>
-          <Button type="submit">Invia</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Invio in corso..." : "Invia"}
+          </Button>
         </form>
       </div>
     </Container>
