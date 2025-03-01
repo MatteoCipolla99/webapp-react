@@ -5,6 +5,8 @@ import DefaultLayout from "./layout/DefaultLayout";
 import HomePage from "./pages/Homepage";
 import MoviePage from "./pages/MoviePage";
 import PageNotFound from "./pages/PageNotFound";
+//Backoffice pages
+import CreateMovie from "./components/CreateMovie";
 
 export default function App() {
   return (
@@ -12,6 +14,7 @@ export default function App() {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/movies/create" element={<CreateMovie />} />
           <Route path="/movies/:id" element={<MoviePage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
